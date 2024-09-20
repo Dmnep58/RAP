@@ -1,27 +1,35 @@
-" Behavoiur Definition --> Managed  --> on Interface View --> book data
-
 managed implementation in class zbp_i_bookdata unique;
 strict ( 2 );
 
-define behavior for zi_bookData //alias <alias_name>
+define behavior for zi_bookData "alias <alias_name>
 persistent table zbooks
 lock master
 authorization master ( instance )
-etag master lastchangedat
+etag master changedat
 {
   create;
   update;
   delete;
-  field ( readonly ) Bookid;
+  field ( readonly:update ) Bookid;
   association _bookallot { create; }
   association _defaulters { create; }
+
+  mapping for zbooks{
+  Bookid = bookid;
+  Bookname = bookname;
+  Bookauthor = bookauthor ;
+  Quantity = quantity;
+  status = status;
+  lastchangedat = lastchangedat;
+  changedat = changedat;
+  }
 }
 
-define behavior for zi_bookallotment //alias <alias_name>
+define behavior for zi_bookallotment "alias <alias_name>
 persistent table zbookallotment
 lock dependent by _bookdata
 authorization dependent by _bookdata
-//etag master <field_name>
+"etag master <field_name>
 {
   update;
   delete;
@@ -38,11 +46,11 @@ authorization dependent by _bookdata
     }
 }
 
-define behavior for zi_defaulterdata //alias <alias_name>
+define behavior for zi_defaulterdata "alias <alias_name>
 persistent table zdefaulters
 lock dependent by _book
 authorization dependent by _book
-//etag master <field_name>
+"etag master <field_name>
 {
   update;
   delete;
