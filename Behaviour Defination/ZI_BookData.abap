@@ -1,16 +1,18 @@
-managed implementation in class zbp_i_bookdata unique;
+managed;
 strict ( 2 );
 
 define behavior for zi_bookData "alias <alias_name>
+implementation in class zbp_i_bookdata unique
 persistent table zbooks
 lock master
 authorization master ( instance )
 etag master changedat
+early numbering
 {
   create;
   update;
   delete;
-  field ( readonly:update ) Bookid;
+  field ( readonly ) Bookid;
   association _bookallot { create; }
   association _defaulters { create; }
 
@@ -26,15 +28,17 @@ etag master changedat
 }
 
 define behavior for zi_bookallotment "alias <alias_name>
+implementation in class zi_bp_bookAllot unique
 persistent table zbookallotment
 lock dependent by _bookdata
 authorization dependent by _bookdata
 "etag master <field_name>
+early numbering
 {
   update;
   delete;
-  field ( readonly : update ) Bookallotmentids, Studentids;
-  field ( readonly ) Bookids;
+  field ( readonly  ) Bookids, Bookallotmentids;
+  field (readonly:update) Studentids;
   association _bookdata;
   mapping for zbookallotment
     {
@@ -47,15 +51,16 @@ authorization dependent by _bookdata
 }
 
 define behavior for zi_defaulterdata "alias <alias_name>
+implementation in class zi_bp_defaulter unique
 persistent table zdefaulters
 lock dependent by _book
 authorization dependent by _book
 "etag master <field_name>
+early numbering
 {
   update;
   delete;
-  field ( readonly : update ) Defaulterid;
-  field ( readonly ) Bookids, Studentids;
+  field ( readonly ) Bookids, Studentids, Defaulterid;
   association _book;
   mapping for zdefaulters
     {
