@@ -126,7 +126,7 @@ METHOD multiple_operation_entities.
 ENDMETHOD.
 
 
-"3. [Auto  fill CID] SET FIELDS ( field1 field2 ) with fields_tab.
+"4. [Auto  fill CID] SET FIELDS ( field1 field2 ) with fields_tab.
 method set_update_fields.
 
     MODIFY ENTITY zi_bookData
